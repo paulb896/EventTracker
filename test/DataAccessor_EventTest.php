@@ -43,7 +43,7 @@ $event->saveEvent($testEventDataExample1);
 
 $dataFromTestDB = $collection->findOne();
 if ($testEventDataExample1['dateTime'] != $dataFromTestDB['dateTime']) {
-	print "\n\n ! Error has occurred while attempting to save an event.";
+    print "\n\n ! Error has occurred while attempting to save an event.";
 }
 
 // Test to find event.

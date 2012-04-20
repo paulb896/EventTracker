@@ -42,18 +42,18 @@ class DataAccessor_Event
         
     }
 
-	/**
-	 * Assign key with name to value parameter.
-	 * 
-	 * @param $key Option name.
-	 * @param $value Value to assign
-	 * 
-	 * todo: Add check for valid option key names.
-	 */
-	public function __set($key, $value)
-	{
-		$this->_options[$key] = $value;
-	}
+    /**
+     * Assign key with name to value parameter.
+     * 
+     * @param $key Option name.
+     * @param $value Value to assign
+     * 
+     * todo: Add check for valid option key names.
+     */
+    public function __set($key, $value)
+    {
+        $this->_options[$key] = $value;
+    }
 
     /**
      * Name of mongo database.
@@ -79,11 +79,11 @@ class DataAccessor_Event
      */
     protected $_db;
 
-	/**
-	 * Array of key/value paired options.
-	 * @var MongoCollection
-	 */
-	protected $_options = array();
+    /**
+     * Array of key/value paired options.
+     * @var MongoCollection
+     */
+    protected $_options = array();
 
     /**
      * Instantiate new instance of mongo database
@@ -101,11 +101,11 @@ class DataAccessor_Event
 
         // Apply db options.
         if (array_key_exists('databaseName', $this->_options)) {
-			$databaseName = $this->_options['databaseName'];
-		}
-		if (array_key_exists('collectionName', $this->_options)) {
-			$collectionName = $this->_options['collectionName'];
-		}
+            $databaseName = $this->_options['databaseName'];
+        }
+        if (array_key_exists('collectionName', $this->_options)) {
+            $collectionName = $this->_options['collectionName'];
+        }
 
         $this->_db = $mongoConnection->selectDB($databaseName);
         $this->_collection = new MongoCollection($this->_db, $collectionName);

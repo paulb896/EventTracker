@@ -2,7 +2,7 @@ Event Tracker
 Author: Paul Beauchamp
 Date: April 19 2012
 
-Instructions:
+Dependencies:
  * Must have php with MongoDB drivers installed:
      http://php.net/manual/en/mongo.installation.php
 
