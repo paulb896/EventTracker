@@ -1,0 +1,12 @@
+Event Tracker
+Author: Paul Beauchamp
+Date: April 19 2012
+
+Contains classes and test scripts associated with event tracking.
+
+Usage:
+
+--- Save an event ---
+   $eventData = array('dataTime' => date("Y-m-d H:i:s"));
+   $event = new DataAccessor_Event();
+   $event->saveEvent($eventData);
