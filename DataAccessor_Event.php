@@ -1,5 +1,4 @@
 <?php
-
 /**
  * MongoDB relations for events.
  */
@@ -26,7 +25,8 @@ class DataAccessor_Event
     /**
      * Find all events that match event constraints.
      *
-     * @param array Event constraints with keys as individual constraint names.
+     * @param array $eventConstraints Constraints with keys as
+     *              individual constraint names.
      *   Example $constraints = array(
      *    "startTime" => "",
      *    "company" => "General Auto Shoppe",
@@ -42,6 +42,19 @@ class DataAccessor_Event
         
     }
 
+	/**
+	 * Assign key with name to value parameter.
+	 * 
+	 * @param $key Option name.
+	 * @param $value Value to assign
+	 * 
+	 * todo: Add check for valid option key names.
+	 */
+	public function __set($key, $value)
+	{
+		$this->_options[$key] = $value;
+	}
+
     /**
      * Name of mongo database.
      * @var string
@@ -56,25 +69,46 @@ class DataAccessor_Event
 
     /**
      * Instance of mongo collection.
-     * @var string
+     * @var MongoCollection
      */
     protected $_collection;
 
     /**
      * Instance of mongo database.
-     * @var MongoDB instance
+     * @var MongoDB
      */
     protected $_db;
+
+	/**
+	 * Array of key/value paired options.
+	 * @var MongoCollection
+	 */
+	protected $_options = array();
 
     /**
      * Instantiate new instance of mongo database
      * and set class collection to mongoDB events collection.
+     * 
+     * todo: Move this into individual db class.
      */
     protected function _constructDb()
     {
         $mongoConnection = new Mongo();
-        $this->_db = $mongoConnection->selectDB($this->_databaseName);
-        $this->_collection = new MongoCollection($this->_db, $this->_collectionName);
+
+        // todo: Is a pattern forming,.. dun, dun, da!?!
+        $databaseName = $this->_databaseName;
+        $collectionName = $this->_collectionName;
+
+        // Apply db options.
+        if (array_key_exists('databaseName', $this->_options)) {
+			$databaseName = $this->_options['databaseName'];
+		}
+		if (array_key_exists('collectionName', $this->_options)) {
+			$collectionName = $this->_options['collectionName'];
+		}
+
+        $this->_db = $mongoConnection->selectDB($databaseName);
+        $this->_collection = new MongoCollection($this->_db, $collectionName);
     }
 }
 ?>
