@@ -5,7 +5,7 @@
  require_once 'DataAccessor_AbstractMongo.php';
 
 /**
- * MongoDB relations for events.
+ * MongoDB relations for events collection.
  */
 class DataAccessor_Event extends DataAccessor_AbstractMongo
 {
@@ -27,6 +27,7 @@ class DataAccessor_Event extends DataAccessor_AbstractMongo
      */
     protected function _isValidCollectionData(array $data)
     {
+        // Change values to FILTER_VALIDATE_ constants.
         $validData = array(
             'userEmail' => 'string',
             'dateTime' => 'string',

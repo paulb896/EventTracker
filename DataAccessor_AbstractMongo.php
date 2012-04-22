@@ -110,6 +110,7 @@ abstract class DataAccessor_AbstractMongo
      */
     protected function _isValidOption($optionName)
     {
+        // todo: add check here for databaseName (only option currently required)
         return true;
     }
 
@@ -130,9 +131,6 @@ abstract class DataAccessor_AbstractMongo
         // Apply db options.
         if (array_key_exists('databaseName', $this->_options)) {
             $databaseName = $this->_options['databaseName'];
-        }
-        if (array_key_exists('collectionName', $this->_options)) {
-            $collectionName = $this->_options['collectionName'];
         }
 
         $this->_db = $mongoConnection->selectDB($databaseName);

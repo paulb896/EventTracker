@@ -1,6 +1,6 @@
 <?php
 
-echo "\n Now running event data accessor test\n\n";
+echo "\n Now running tests to exercise event class\n\n";
 
 // Setup test data.
 
@@ -21,7 +21,6 @@ $testEventDataExample2 = array(
 );
 
 $testDBName = 'myTestDatabase942';
-$testCollectionName = 'notKnownAsEventAnymore';
 
 require_once '../DataAccessor_Event.php';
 $event = new DataAccessor_Event();
@@ -29,20 +28,17 @@ $event = new DataAccessor_Event();
 // Set event object database to test database.
 $event->databaseName = $testDBName;
 
-// Set event collection name to test name.
-$event->collectionName = $testCollectionName;
-
 // Setup test mongo database.
 $mongoConnection = new Mongo();
 $testDB = $mongoConnection->selectDB($testDBName);
-$collection = new MongoCollection($testDB, $testCollectionName);
+$collection = new MongoCollection($testDB, 'events');
 
 // Test to save event.
 print "\nRunning save event test.";
 $event->insertIntoCollection($testEventDataExample1);
 $dataFromTestDB = $collection->findOne();
 if ($testEventDataExample1['dateTime'] != $dataFromTestDB['dateTime']) {
-    print "\n\n ! Error has occurred while attempting to save an event.\n\n";
+    print "\n\n ! An error has occurred while attempting to save an event.\n\n";
 }
 
 // Save an extra record to verify that the query works properly.
