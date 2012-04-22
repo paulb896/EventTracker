@@ -39,21 +39,21 @@ $collection = new MongoCollection($testDB, $testCollectionName);
 
 // Test to save event.
 print "\nRunning save event test.";
-$event->saveEvent($testEventDataExample1);
+$event->insertIntoCollection($testEventDataExample1);
 $dataFromTestDB = $collection->findOne();
 if ($testEventDataExample1['dateTime'] != $dataFromTestDB['dateTime']) {
     print "\n\n ! Error has occurred while attempting to save an event.\n\n";
 }
 
 // Save an extra record to verify that the query works properly.
-$event->saveEvent($testEventDataExample2);
+$event->insertIntoCollection($testEventDataExample2);
 
 // Running test to get events.
-print "\nRunning get events test.";
-$allEventsForUser1 = $event->getEvents(array('userEmail' => $testEventDataExample1['userEmail']));
-if (count($allEventsForUser1) !== 1) {
+//print "\nRunning get events test.";
+//$allEventsForUser1 = $event->getAll(array('userEmail' => $testEventDataExample1['userEmail']));
+//if (count($allEventsForUser1) !== 1) {
 	
-};
+//};
 
 // Delete data from test database.
 $testDB->drop();

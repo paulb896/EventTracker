@@ -13,4 +13,4 @@ Usage:
 --- Save an event ---
    $eventData = array('dateTime' => date("Y-m-d H:i:s"));
    $event = new DataAccessor_Event();
-   $event->saveEvent($eventData);
+   $event->insertIntoCollection($eventData);
