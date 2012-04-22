@@ -17,7 +17,7 @@ $testEventDataExample2 = array(
     'timestamp' => date("Y-m-d H:i:s"),
     'shortDescription' => 'I really ',
     'location' => '-33.8670522,151.1957362',
-    'userEmail' => 'fake@fake.ca'
+    'userEmail' => 'fake2@fake.ca'
 );
 
 $testDBName = 'myTestDatabase942';
@@ -40,18 +40,22 @@ $collection = new MongoCollection($testDB, $testCollectionName);
 // Test to save event.
 print "\nRunning save event test.";
 $event->saveEvent($testEventDataExample1);
-
 $dataFromTestDB = $collection->findOne();
 if ($testEventDataExample1['dateTime'] != $dataFromTestDB['dateTime']) {
-    print "\n\n ! Error has occurred while attempting to save an event.";
+    print "\n\n ! Error has occurred while attempting to save an event.\n\n";
 }
 
-// Test to find event.
-// todo: Do this test driven.
-//$event->getEvents();
+// Save an extra record to verify that the query works properly.
+$event->saveEvent($testEventDataExample2);
+
+// Running test to get events.
+print "\nRunning get events test.";
+$allEventsForUser1 = $event->getEvents(array('userEmail' => $testEventDataExample1['userEmail']));
+if (count($allEventsForUser1) !== 1) {
+	
+};
 
 // Delete data from test database.
-
 $testDB->drop();
 
 print "\nTesting has finished!\n\n";

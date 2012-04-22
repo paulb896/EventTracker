@@ -1,6 +1,8 @@
 <?php
 /**
  * MongoDB relations for events.
+ * 
+ * todo: Make this an abstract class and move validation logic to inherited classes.
  */
 class DataAccessor_Event
 {
@@ -39,7 +41,14 @@ class DataAccessor_Event
      */
     public function getEvents(array $eventConstraints)
     {
-        
+        $this->_constructDb();
+        $events = array();
+        $eventsCursor = $this->_collection->find($eventConstraints);
+        foreach($eventsCursor as $singleEvent) {
+            $events[] = (array) $singleEvent;
+        }
+
+        return $events;
     }
 
     /**
@@ -59,13 +68,13 @@ class DataAccessor_Event
      * Name of mongo database.
      * @var string
      */
-    protected $_databaseName = 'myNewDatabase';
+    protected $_optionDatabaseName = 'myNewDatabase';
 
     /**
      * Name of mongo database.
      * @var string
      */
-    protected $_collectionName = 'events';
+    protected $_optionCollectionName = 'events';
 
     /**
      * Instance of mongo collection.
@@ -96,8 +105,8 @@ class DataAccessor_Event
         $mongoConnection = new Mongo();
 
         // todo: Is a pattern forming,.. dun, dun, da!?!
-        $databaseName = $this->_databaseName;
-        $collectionName = $this->_collectionName;
+        $databaseName = $this->_optionDatabaseName;
+        $collectionName = $this->_optionCollectionName;
 
         // Apply db options.
         if (array_key_exists('databaseName', $this->_options)) {
