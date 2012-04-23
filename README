@@ -1,16 +1,26 @@
-Event Tracker
+Name: Event Tracker
+Description: Contains classes and test scripts associated with event tracking.
 Author: Paul Beauchamp
 Date: April 19 2012
 
-Dependencies:
+DEPENDENCIES:
  * Must have php with MongoDB drivers installed:
      http://php.net/manual/en/mongo.installation.php
 
-Contains classes and test scripts associated with event tracking.
 
-Usage:
+
+USAGE:
 
 --- Save an event ---
-   $eventData = array('dateTime' => date("Y-m-d H:i:s"));
+   $eventData = array('dateTime' => date("Y-m-d H:i:s"), 'userEmail' => 'mario@hotmail.com');
+
+   // Remember to require the event class.
    $event = new DataAccessor_Event();
    $event->insertIntoCollection($eventData);
+
+
+
+
+TESTS:
+> cd test
+> php DataAccessor_EventTest.php
