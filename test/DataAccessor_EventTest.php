@@ -58,13 +58,6 @@ class DataAccessor_EventTest
         if ($event->insertIntoCollection($this->_testData['event1']) !== true) {
             print "\n\n ! An error has occurred while attempting to save an event.\n\n";
         }
-
-        $collection = new MongoCollection($this->_testDatabase, 'events');
-        $dataFromTestDB = $collection->findOne();
-
-        if ($this->_testData['event1']['dateTime'] != $dataFromTestDB['dateTime']) {
-            print "\n\n ! Invalid event data has been entered";
-        }
     }
 
     /**
@@ -81,13 +74,17 @@ class DataAccessor_EventTest
     /**
      * Verify find event functionality.
      */
-    public function testFind()
+    public function testGetAll()
     {
-        //print "\nRunning get events test.";
-        //$allEventsForUser1 = $event->getAll(array('userEmail' => $testEventDataExample1['userEmail']));
-        //if (count($allEventsForUser1) !== 1) {
+        print "\nRunning get events test.";
+
+        $event = new DataAccessor_Event();
+        $event->databaseName = $this->_testDatabaseName;
+        $allEventsForUser1 = $event->getAll(array('userEmail' => $this->_testData['event1']['userEmail']));
+        if (count($allEventsForUser1) !== 1) {
             
-        //};
+            print "\n\n ! Could not find event from save test.\n\n";
+        };
     }
 
     /**
@@ -109,9 +106,10 @@ class DataAccessor_EventTest
 }
 
 echo "\n Now running tests to exercise event class\n\n";
-$eventTestClass = new DataAccessor_EventTest();
-$eventTestClass->testSave();
-$eventTestClass->testSaveInvalidEvent();
+$eventTestInstance = new DataAccessor_EventTest();
+$eventTestInstance->testSave();
+$eventTestInstance->testSaveInvalidEvent();
+$eventTestInstance->testGetAll();
 
 print "\nTesting has finished!\n\n";
 ?>

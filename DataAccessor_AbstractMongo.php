@@ -39,18 +39,19 @@ abstract class DataAccessor_AbstractMongo
      */
     public function getAll($objectConstraints = array())
     {
-        if (!$this->_isValidCollectionData($objectConstraints)) {
-            return array();
-        }
+        $objects = array();
+        //if (!$this->_isValidCollectionData($objectConstraints)) {
+        //    return $objects;
+        //}
 
         $this->_constructDb();
-        $events = array();
-        $eventsCursor = $this->_collection->find($eventConstraints);
-        foreach($eventsCursor as $singleEvent) {
-            $events[] = (array) $singleEvent;
+        
+        $objectCursor = $this->_collection->find($objectConstraints);
+        foreach($objectCursor as $singleObject) {
+            $objects[] = (array) $singleObject;
         }
 
-        return $events;
+        return $objects;
     }
 
     /**
