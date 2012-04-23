@@ -111,8 +111,15 @@ abstract class DataAccessor_AbstractMongo
      */
     protected function _isValidOption($optionName)
     {
-        // todo: add check here for databaseName (only option currently required)
-        return true;
+        $validOptions = array(
+            'databaseName' => 'string'
+        );
+
+        if (array_key_exists($optionName, $validOptions)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test functions contained in DataAccessor_Event class.
+ * Class that tests functions contained in DataAccessor_Event.
  */
 class DataAccessor_EventTest
 {
