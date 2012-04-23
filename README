@@ -1,12 +1,11 @@
 Name: Event Tracker
 Description: Contains classes and test scripts associated with event tracking.
 Author: Paul Beauchamp
-Date: April 19 2012
+Start Date: April 19 2012
 
 DEPENDENCIES:
  * Must have php with MongoDB drivers installed:
      http://php.net/manual/en/mongo.installation.php
-
 
 
 USAGE:
@@ -16,9 +15,15 @@ USAGE:
 
    // Remember to require the event class.
    $event = new DataAccessor_Event();
+   $event->databaseName = 'yourDatabaseName';
    $event->insertIntoCollection($eventData);
 
-
+--- Get list of events ---
+    $event = new DataAccessor_Event();
+    $event->databaseName = 'yourDatabaseName';
+    $arrayOfEvents = $event->getAll(
+        array('userEmail' => 'mario@hotmail.com')
+    );
 
 
 TESTS:
