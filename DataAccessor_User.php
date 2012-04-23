@@ -32,7 +32,7 @@ class DataAccessor_User extends DataAccessor_AbstractMongo
             'alias' => 'string'
         );
 
-        if (count(array_diff_key($validData, $data)) !== 0) {
+        if (count(array_diff_key($data, $validData)) !== 0) {
             return false;
         }
 

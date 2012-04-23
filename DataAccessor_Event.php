@@ -36,7 +36,7 @@ class DataAccessor_Event extends DataAccessor_AbstractMongo
             'shortDescription' => 'string'
         );
 
-        if (count(array_diff_key($validData, $data)) !== 0) {
+        if (count(array_diff_key($data, $validData)) !== 0) {
             return false;
         }
 
