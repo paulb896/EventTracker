@@ -26,6 +26,7 @@ abstract class DataAccessor_AbstractMongo
 
         $this->_constructDb();
         $this->_collection->insert($collectionData);
+        return true;
     }
 
     /**

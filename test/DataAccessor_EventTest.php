@@ -1,20 +1,8 @@
 <?php
 
-
-
-// Setup test data.
-
-
-
-
-
-
-
-
-
-
-
-
+/**
+ * Test functions contained in DataAccessor_Event class.
+ */
 class DataAccessor_EventTest
 {
     /**
@@ -36,6 +24,10 @@ class DataAccessor_EventTest
             'shortDescription' => 'I really ',
             'location' => '-33.8670522,151.1957362',
             'userEmail' => 'fake2@fake.ca'
+        );
+
+        $this->_testData['invalidEvent1'] = array(
+            'invalidEventAttribute' => 'someValue'
         );
 
         $mongoConnection = new Mongo();
@@ -63,13 +55,26 @@ class DataAccessor_EventTest
         // Set event object database to test database.
         $event->databaseName = $this->_testDatabaseName;
 
-        $event->insertIntoCollection($this->_testData['event1']);
+        if ($event->insertIntoCollection($this->_testData['event1']) !== true) {
+            print "\n\n ! An error has occurred while attempting to save an event.\n\n";
+        }
 
         $collection = new MongoCollection($this->_testDatabase, 'events');
         $dataFromTestDB = $collection->findOne();
 
         if ($this->_testData['event1']['dateTime'] != $dataFromTestDB['dateTime']) {
-            print "\n\n ! An error has occurred while attempting to save an event.\n\n";
+            print "\n\n ! Invalid event data has been entered";
+        }
+    }
+
+    /**
+     * Test save function with invalid data.
+     */
+    public function testSaveInvalidEvent()
+    {
+        $event = new DataAccessor_Event();
+        if ($event->insertIntoCollection($this->_testData['invalidEvent1']) !== false) {
+            print "\n\n ! An error has occurred while attempting to save an invalid event.\n\n";
         }
     }
 
@@ -106,6 +111,7 @@ class DataAccessor_EventTest
 echo "\n Now running tests to exercise event class\n\n";
 $eventTestClass = new DataAccessor_EventTest();
 $eventTestClass->testSave();
+$eventTestClass->testSaveInvalidEvent();
 
 print "\nTesting has finished!\n\n";
 ?>
