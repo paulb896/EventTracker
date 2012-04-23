@@ -8,7 +8,7 @@ abstract class DataAccessor_AbstractMongo
 {
     /**
      * Save an event to mongoDB.
-     * @param array An array of event information for a single event.
+     * @param array An array of event information for a single collection object.
      *   Example $collectionData = array(
      *    "time" => "",
      *    "company" => "General Auto Shoppe",
@@ -37,8 +37,12 @@ abstract class DataAccessor_AbstractMongo
      * 
      * @return array Array of single object information arrays.
      */
-    public function getAll(array $objectConstraints)
+    public function getAll($objectConstraints = array())
     {
+        if (!$this->_isValidCollectionData($objectConstraints)) {
+            return array();
+        }
+
         $this->_constructDb();
         $events = array();
         $eventsCursor = $this->_collection->find($eventConstraints);
