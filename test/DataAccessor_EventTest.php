@@ -11,7 +11,8 @@ class DataAccessor_EventTest
     public function __construct()
     {
         $this->_testData['event1'] = array(
-            'dateTime' => '2012-12-24 18:56:35',
+            'startDateTime' => '2012-12-24 18:56:35',
+            'endDateTime' => '2012-12-6 3:56:00',
             'timestamp' => date("Y-m-d H:i:s"),
             'shortDescription' => 'End of civilization as we currently know it',
             'location' => '-33.8670522,151.1957362',
@@ -20,8 +21,9 @@ class DataAccessor_EventTest
 
         $this->_testData['event2'] = array(
             'dateTime' => '1995-05-23 11:00:00',
+            'endTime' => '1995-05-23 13:00:00',
             'timestamp' => date("Y-m-d H:i:s"),
-            'shortDescription' => 'I really ',
+            'shortDescription' => 'Watch great movie',
             'location' => '-33.8670522,151.1957362',
             'userEmail' => 'fake2@fake.ca'
         );
@@ -82,7 +84,6 @@ class DataAccessor_EventTest
         $event->databaseName = $this->_testDatabaseName;
         $allEventsForUser1 = $event->getAll(array('userEmail' => $this->_testData['event1']['userEmail']));
         if (count($allEventsForUser1) !== 1) {
-            
             print "\n\n ! Could not find event from save test.\n\n";
         };
     }

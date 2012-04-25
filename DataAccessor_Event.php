@@ -30,7 +30,8 @@ class DataAccessor_Event extends DataAccessor_AbstractMongo
         // Change values to FILTER_VALIDATE_ constants.
         $validData = array(
             'userEmail' => 'string',
-            'dateTime' => 'string',
+            'startDateTime' => 'string',
+            'endDateTime' => 'string',
             'timestamp' => 'string',
             'location' => 'string',
             'shortDescription' => 'string'
@@ -40,6 +41,9 @@ class DataAccessor_Event extends DataAccessor_AbstractMongo
             return false;
         }
 
+        //if (array_key_exists(''
+
+        // todo: Add more validation here as needed..
         return true;
     }
 }

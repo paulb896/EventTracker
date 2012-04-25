@@ -21,6 +21,8 @@ USAGE:
 --- Get list of events ---
     $event = new DataAccessor_Event();
     $event->databaseName = 'yourDatabaseName';
+
+    // Let's see what mario's been up to.
     $arrayOfEvents = $event->getAll(
         array('userEmail' => 'mario@hotmail.com')
     );

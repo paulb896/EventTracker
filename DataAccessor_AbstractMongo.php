@@ -7,6 +7,21 @@
 abstract class DataAccessor_AbstractMongo
 {
     /**
+     * Verify data is acceptable for collection.
+     * 
+     * @param array Array of data keyed by data name.
+     * @return bool True if data is valid for collection.
+     */
+    abstract protected function _isValidCollectionData(array $data);
+
+    /**
+     * Get the name of this mongo collection.
+     * 
+     * @return string Name of mongo collection.
+     */
+    abstract protected function _getCollectionName();
+
+    /**
      * Save an event to mongoDB.
      * @param array An array of event information for a single collection object.
      *   Example $collectionData = array(
@@ -45,7 +60,9 @@ abstract class DataAccessor_AbstractMongo
         //}
 
         $this->_constructDb();
-        
+
+        $objectConstraints = $this->_getFormattedMongoQuery($objectConstraints);
+
         $objectCursor = $this->_collection->find($objectConstraints);
         foreach($objectCursor as $singleObject) {
             $objects[] = (array) $singleObject;
@@ -66,7 +83,23 @@ abstract class DataAccessor_AbstractMongo
     {
         if ($this->_isValidOption($key)) {
             $this->_options[$key] = $value;
+            $this->_isDatabaseConstructed = false;
         }
+    }
+
+    /**
+     * Format query for mongo db find operation.
+     * Currently leave this open for child class to override,
+     * at this point it seems unnecessary to make abstract.
+     * 
+     * todo: Possibly make searchArray passed by reference.
+     * 
+     * @param array $searchArray
+     * @return array
+     */
+    protected function _getFormattedMongoQuery($searchArray)
+    {
+        return $searchArray;
     }
 
     /**
@@ -74,13 +107,6 @@ abstract class DataAccessor_AbstractMongo
      * @var string
      */
     protected $_optionDatabaseName = 'myNewDatabase';
-
-    /**
-     * Get the name of this mongo collection.
-     * 
-     * @return string Name of mongo collection.
-     */
-    abstract protected function _getCollectionName();
 
     /**
      * Instance of mongo collection.
@@ -95,18 +121,18 @@ abstract class DataAccessor_AbstractMongo
     protected $_db;
 
     /**
+     * True if database needs to be constructed,
+     * false if the database has been initialized.
+     * 
+     * @var bool
+     */
+    protected $_isDatabaseConstructed = false;
+
+    /**
      * Array of key/value paired options.
      * @var MongoCollection
      */
     protected $_options = array();
-
-    /**
-     * Verify data is acceptable for collection.
-     * 
-     * @param array Array of data keyed by data name.
-     * @return bool True if data is valid for collection.
-     */
-    abstract protected function _isValidCollectionData(array $data);
 
     /**
      * Verify that option name is valid.
@@ -135,9 +161,14 @@ abstract class DataAccessor_AbstractMongo
      */
     protected function _constructDb()
     {
+        // Skip this function if current database settings
+        // have already been initialized.
+        if ($this->_isDatabaseConstructed === true) {
+            return;
+        }
+
         $mongoConnection = new Mongo();
 
-        // todo: Is a pattern forming,.. dun, dun, da!?!
         $databaseName = $this->_optionDatabaseName;
         $collectionName = $this->_getCollectionName();
 
@@ -148,6 +179,7 @@ abstract class DataAccessor_AbstractMongo
 
         $this->_db = $mongoConnection->selectDB($databaseName);
         $this->_collection = new MongoCollection($this->_db, $collectionName);
+        $this->_isDatabaseConstructed = true;
     }
 }
 ?>
