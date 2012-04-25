@@ -9,10 +9,10 @@ abstract class DataAccessor_AbstractMongo
     /**
      * Verify data is acceptable for collection.
      * 
-     * @param array Array of data keyed by data name.
-     * @return bool True if data is valid for collection.
+     * @param array Array of data keyed by data name. (pass this back by reference).
+     * @return bool True if data is valid for collection, false otherwise.
      */
-    abstract protected function _isValidCollectionData(array $data);
+    abstract protected function _isValidCollectionData(array &$data);
 
     /**
      * Get the name of this mongo collection.
@@ -35,7 +35,7 @@ abstract class DataAccessor_AbstractMongo
      */
     public function insertIntoCollection(array $collectionData)
     {
-        if (!$this->_isValidCollectionData($collectionData)) {
+        if ($this->_isValidCollectionData($collectionData) === false) {
             return false;
         }
 
@@ -47,12 +47,12 @@ abstract class DataAccessor_AbstractMongo
     /**
      * Find all records that match constraints.
      *
-     * @param array $objectConstraints Constraints with keys as
+     * @param array $searchFilters Constraints with keys as
      *              individual constraint names.
      * 
      * @return array Array of single object information arrays.
      */
-    public function getAll($objectConstraints = array())
+    public function getAll($searchFilters = array())
     {
         $objects = array();
         //if (!$this->_isValidCollectionData($objectConstraints)) {
@@ -61,9 +61,9 @@ abstract class DataAccessor_AbstractMongo
 
         $this->_constructDb();
 
-        $objectConstraints = $this->_getFormattedMongoQuery($objectConstraints);
+        $searchFilters = $this->_getFormattedMongoQuery($searchFilters);
 
-        $objectCursor = $this->_collection->find($objectConstraints);
+        $objectCursor = $this->_collection->find($searchFilters);
         foreach($objectCursor as $singleObject) {
             $objects[] = (array) $singleObject;
         }

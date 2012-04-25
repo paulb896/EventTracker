@@ -12,8 +12,8 @@ class DataAccessor_EventTest
     {
         $this->_testData['event1'] = array(
             'startDateTime' => '2012-12-24 18:56:35',
-            'endDateTime' => '2012-12-6 3:56:00',
-            'timestamp' => date("Y-m-d H:i:s"),
+            'endDateTime' => '2012-12-26 3:56:00',
+            'timeStamp' => date("Y-m-d H:i:s"),
             'shortDescription' => 'End of civilization as we currently know it',
             'location' => '-33.8670522,151.1957362',
             'userEmail' => 'fake@fake.ca'
@@ -22,7 +22,7 @@ class DataAccessor_EventTest
         $this->_testData['event2'] = array(
             'dateTime' => '1995-05-23 11:00:00',
             'endTime' => '1995-05-23 13:00:00',
-            'timestamp' => date("Y-m-d H:i:s"),
+            'timeStamp' => date("Y-m-d H:i:s"),
             'shortDescription' => 'Watch great movie',
             'location' => '-33.8670522,151.1957362',
             'userEmail' => 'fake2@fake.ca'
@@ -82,9 +82,36 @@ class DataAccessor_EventTest
 
         $event = new DataAccessor_Event();
         $event->databaseName = $this->_testDatabaseName;
-        $allEventsForUser1 = $event->getAll(array('userEmail' => $this->_testData['event1']['userEmail']));
+        $allEventsForUser1 = $event->getAll(
+            array(
+                'userEmail' => $this->_testData['event1']['userEmail']
+            )
+        );
+
         if (count($allEventsForUser1) !== 1) {
             print "\n\n ! Could not find event from save test.\n\n";
+        };
+    }
+
+    /**
+     * Verify find event date search functionality.
+     */
+    public function testGetAllUsingTimeFrameContainingNoEvents()
+    {
+        print "\nRunning get events test filtering by time line empty time line.";
+
+        $event = new DataAccessor_Event();
+        $event->databaseName = $this->_testDatabaseName;
+        $shouldContainNoEvents = $event->getAll(
+            array(
+                'userEmail' => $this->_testData['event1']['userEmail'],
+                'startDateTime' => '2011-05-24 18:56:35',
+                'endDateTime' => '2011-12-27 3:56:00'
+            )
+        );
+
+        if (count($shouldContainNoEvents) !== 0) {
+            print "\n\n ! Query for time line should contain no events.\n\n";
         };
     }
 
@@ -111,6 +138,7 @@ $eventTestInstance = new DataAccessor_EventTest();
 $eventTestInstance->testSave();
 $eventTestInstance->testSaveInvalidEvent();
 $eventTestInstance->testGetAll();
+$eventTestInstance->testGetAllUsingTimeFrameContainingNoEvents();
 
 print "\nTesting has finished!\n\n";
 ?>
